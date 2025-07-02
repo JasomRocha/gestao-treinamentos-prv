@@ -3,10 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\User;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -15,10 +13,10 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('cnpj')->nullable(false);
+            $table->string('cnpj', 18); // Tamanho máximo: "99.999.999/9999-99"
             $table->string('person');
             $table->string('phone');
-            $table->foreignIdFor(User::class)->references('id')->on('users')->onDelete('CASCADE');
+            $table->foreignId('user_id')->constrained()->onDelete('CASCADE');
             $table->timestamps();
         });
     }
@@ -29,7 +27,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->dropForeignIdFor(User::class);
+            $table->dropForeignId('user_id');
         });
 
         Schema::dropIfExists('clients');

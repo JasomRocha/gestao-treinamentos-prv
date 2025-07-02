@@ -9,16 +9,16 @@ class Training extends Model
 {
     use SoftDeletes;
     protected $fillable = [
-    'title',
-    'due_date',
-    'description',
-    'qtd_student',
-    'type_training_id',
-    'client_id',
-    'instructor_id',
-    'status_id',
-    'financial_status_id',
-    'user_id',
+        'title',
+        'due_date',
+        'description',
+        'qtd_student',
+        'type_training_id',
+        'client_id',
+        'instructor_id',
+        'status_id',
+        'financial_status_id',
+        'user_id',
     ];
 
     public function user()
@@ -58,7 +58,7 @@ class Training extends Model
 
     public function costs()
     {
-        return $this->belongsToMany(Cost::class, 'training_cost')
+        return $this->belongsToMany(Cost::class, 'training_costs')
                     ->withPivot('quantity', 'final_value')
                     ->withTimestamps();
     }

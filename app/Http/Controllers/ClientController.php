@@ -27,7 +27,7 @@ class ClientController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'cnpj' => 'required|unsignedBigInteger|digits:14',
+            'cnpj' => 'required|string|max:18',
             'person' => 'required|string',
             'phone' => 'required|string',
         ]);
@@ -38,7 +38,7 @@ class ClientController extends Controller
 
         // Insere o user_id automaticamente
         $data = $request->all();
-        $data['user_id'] = auth()->id(); // ou auth()->user()->id
+        $data['user_id'] = auth()->user()->id; // ou auth()->user()->id
 
         $client = Client::create($data);
 
@@ -51,8 +51,8 @@ class ClientController extends Controller
     public function show(string $id)
     {
         $client = Client::with([
-        'user',
-        'trainings',
+            'user',
+            'trainings',
         ])->findOrFail($id);
 
         return response()->json($client);

@@ -25,7 +25,7 @@ class CostController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
-            'value_unit' => 'required|integer|min:1',
+            'value_unt' => 'required|integer|min:1',
             'description' => 'required|string',
         ]);
 

@@ -33,7 +33,7 @@ class TrainingCostController extends Controller
         $cost = Cost::where('title', $data['cost_name'])->firstOrFail();
 
         // Calcula o valor final
-        $finalValue = $data['quantity'] * $cost->value_unit;
+        $finalValue = $data['quantity'] * $cost->value_unt;
 
         // Faz o vínculo na tabela pivô
         $training->costs()->attach($cost->id, [
@@ -61,7 +61,7 @@ class TrainingCostController extends Controller
     public function update(Request $request, Training $training, $training_cost_id)
     {
         $data = $request->validate([
-        'quantity' => 'required|integer|min:1',
+            'quantity' => 'required|integer|min:1',
         ]);
 
         // Busca o registro pivô

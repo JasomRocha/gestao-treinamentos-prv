@@ -3,20 +3,17 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Training;
-use App\Models\Resource;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('booking_resource', function (Blueprint $table) {
+        Schema::create('booking_resources', function (Blueprint $table) {
             $table->id();
-            $table->foreignId(Training::class)->references('id')->on('trainings')->onDelete('cascade');
-            $table->foreignId(Resource::class)->references('id')->on('resources')->onDelete('cascade');
+            $table->foreignId('training_id')->constrained()->onDelete('cascade');
+            $table->foreignId('resource_id')->constrained()->onDelete('cascade');
             $table->date('due_date');
             $table->string('comment')->nullable();
             $table->timestamps();
@@ -28,10 +25,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('post_trainings', function (Blueprint $table) {
-            $table->dropForeignIdFor(Training::class);
-            $table->dropForeignIdFor(Resource::class);
+        Schema::table('booking_resources', function (Blueprint $table) {
+            $table->dropForeignId('training_id');
+            $table->dropForeignId('resource_id');
         });
-        Schema::dropIfExists('booking_resource');
+        Schema::dropIfExists('booking_resources');
     }
 };

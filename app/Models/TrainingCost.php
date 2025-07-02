@@ -4,23 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Training_Cost extends Model
+class TrainingCost extends Model
 {
-    //
-        protected $table = 'training_costs';
+    protected $table = 'training_costs';
 
     protected $fillable = [
         'training_id',
         'cost_id',
         'quantity',
-        'final_value'
+        'final_value',
     ];
 
-    public function training() {
+    public function training()
+    {
         return $this->belongsTo(Training::class);
     }
 
-    public function cost() {
+    public function cost()
+    {
         return $this->belongsTo(Cost::class);
     }
 }
