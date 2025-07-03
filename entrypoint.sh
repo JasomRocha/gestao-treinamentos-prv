@@ -1,7 +1,8 @@
 #!/bin/sh
 
-# Inicia nginx em background
-nginx -g "daemon off;" &
+# Executa migrations, se quiser (opcional):
+# php artisan migrate --force
 
-# Inicia php-fpm em foreground (mantém o container vivo)
-php-fpm -F
+# Inicia o PHP-FPM e o nginx
+php-fpm &
+nginx -g 'daemon off;
