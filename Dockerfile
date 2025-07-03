@@ -1,4 +1,4 @@
-# Usa a imagem oficial php com fpm e extensões para Laravel
+# Usa a imagem oficial PHP com FPM e extensões para Laravel
 FROM php:8.2-fpm
 
 # Instala dependências necessárias do sistema
@@ -23,17 +23,23 @@ WORKDIR /var/www/html
 # Copia os arquivos da aplicação
 COPY . .
 
-# Instala dependências PHP
+# Instala dependências PHP (produção)
 RUN composer install --no-dev --optimize-autoloader
 
-# Permissões básicas (storage e cache)
+# Ajusta permissões básicas (storage e cache)
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# Copia configuração do nginx
+# Copia configuração do nginx (supondo que você tenha nginx.conf no projeto)
 COPY ./nginx.conf /etc/nginx/sites-available/default
+
+# Copia o script entrypoint para o container
+COPY entrypoint.sh /entrypoint.sh
+
+# Dá permissão de execução para o entrypoint
+RUN chmod +x /entrypoint.sh
 
 # Expõe a porta 8080 para o Railway
 EXPOSE 8080
 
-# Comando para rodar PHP-FPM e nginx
-CMD service nginx start && php-fpm
+# Usa o entrypoint.sh para rodar os serviços
+CMD ["/entrypoint.sh"]
