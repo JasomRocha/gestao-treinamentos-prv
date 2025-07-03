@@ -5,4 +5,4 @@
 
 # Inicia o PHP-FPM e o nginx
 php-fpm &
-nginx -g 'daemon off;
+nginx -g 'daemon off;'
