@@ -12,6 +12,7 @@ class FinancialStatusController extends Controller
      */
     public function index()
     {
+        return response()->json(FinancialStatus::all());
     }
 
     /**
@@ -27,7 +28,7 @@ class FinancialStatusController extends Controller
     public function show(string $id)
     {
         $type = FinancialStatus::with([
-        'trainings',
+            'trainings',
         ])->findOrFail($id);
 
         return response()->json($type);
