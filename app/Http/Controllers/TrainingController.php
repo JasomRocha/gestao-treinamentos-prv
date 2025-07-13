@@ -68,7 +68,7 @@ class TrainingController extends Controller
         // Associar o usuário logado (se for o caso)
         $data['user_id'] = auth()->id();
 
-        $training = \App\Models\Training::create($data);
+        $training = Training::create($data);
 
         return response()->json($training, 201);
     }
@@ -92,7 +92,31 @@ class TrainingController extends Controller
     {
         $training = Training::findOrFail($id);
 
-        $training->update($request->all());
+        $data = $request->only([
+            'title',
+            'due_date',
+            'description',
+            'qtd_student',
+        ]);
+
+        // Busca os IDs relacionados
+        $typeTraining = \App\Models\TypeTraining::where('type', $request->type_training_name)->first();
+        $client = \App\Models\Client::where('name', $request->client_name)->first();
+        $instructor = \App\Models\Instructor::where('name', $request->instructor_name)->first();
+        $status = \App\Models\Status::where('status', $request->status_name)->first();
+        $financialStatus = \App\Models\FinancialStatus::where('status', $request->financial_status_name)->first();
+
+        if (!$typeTraining || !$client || !$instructor || !$status || !$financialStatus) {
+            return response()->json(['error' => 'Registro relacionado não encontrado.'], 422);
+        }
+
+        $data['type_training_id'] = $typeTraining->id;
+        $data['client_id'] = $client->id;
+        $data['instructor_id'] = $instructor->id;
+        $data['status_id'] = $status->id;
+        $data['financial_status_id'] = $financialStatus->id;
+
+        $training->update($data);
 
         return response()->json($training);
     }
