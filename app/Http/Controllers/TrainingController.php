@@ -25,7 +25,6 @@ class TrainingController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'due_date' => 'required|date',
